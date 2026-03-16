@@ -145,15 +145,15 @@ int main() {
 
 	while (!to_exit) {
 		displayMenu();
-		printf("Выберите действие: ");
+		printf("Введите команду: ");
 		scanf_c("%d", &choice);
 
 		switch (choice) {
 			char username[50];
 			int priority, dept;
 
-			case 1: { // Добавить заявку
-				printf("Введите имя пользователя (макс 50 символов): ");
+			case 1: { // Добавление заявки
+				printf("Введите имя пользователя (макс 50 сим): ");
 				scanf_c("%50s", username);
 				printf("Введите приоритет (1-5): ");
 				scanf_c("%d", &priority);
@@ -176,7 +176,7 @@ int main() {
 				break;
 			}
 
-			case 2: { // Просмотреть первую заявку
+			case 2: { // Просмотр первой заявки в очереди
 				printf("Введите подразделение (1-3): ");
 				scanf_c("%d", &dept);
 
@@ -196,12 +196,12 @@ int main() {
 				break;
 			}
 
-			case 3: {
+			case 3: { // Обработка заявки (удаление из очереди)
 				printf("Введите подразделение (1-3): ");
-				scanf_c("%d", &dept);
+				scanf("%d", &dept);
 
 				if (dept < 1 || dept > 3) {
-					printf("Error: неверный номер подразделения!\n");
+					printf("Ошибка: неверный номер подразделения!\n");
 					break;
 				}
 
@@ -262,9 +262,16 @@ int main() {
 			}
 
 			default: {
-				printf("Введена неверная команда\n");
+				printf("Неверная команда!\n");
 				break;
 			}
+		}
+	}
+
+	// Очистка очередей
+	for (int i = 0; i < 3; i++) {
+		while (departments[i].head != NULL) {
+			popQueue(&departments[i]);
 		}
 	}
 
