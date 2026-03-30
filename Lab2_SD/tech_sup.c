@@ -518,6 +518,7 @@ void save_to_file(const char* filename, Department* deps, int dep_count, Stack* 
     FILE* file = fopen(filename, "w");
     if (!file) return;
 
+    // Очереди
     for (int i = 0; i < dep_count; i++) {
         for (int j = 0; j < deps[i].queue_count; j++) {
             Node* curr = deps[i].sub_queues[j]->head;
@@ -621,6 +622,7 @@ void load_from_file(const char* filename, Department* deps, int* max_id, Stack* 
         else {
             free(r);
         }
+        else free(r);
         if (id >= *max_id) *max_id = id + 1;
     }
 
@@ -693,6 +695,7 @@ int main(void) {
             while (getchar() != '\n');
             continue;
         }
+
         if (choice == 0) break;
 
         switch (choice) {
