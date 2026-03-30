@@ -298,7 +298,7 @@ void remove_node(Queue* q, Node* prev, Node* target) {
     free(target);
 }
 
-// Обработка
+// ОБРАБОТКА — ИСПРАВЛЕНО: теперь выбирается САМАЯ ПРИОРИТЕТНАЯ готовая заявка из ВСЕХ подочередей отдела
 void process_next_in_department(Department* dev, int dep_id, Department* all_deps, int dep_count, Stack* s, int id_counter) {
     Queue* best_q = NULL;
     Node* best_prev = NULL;
@@ -411,7 +411,7 @@ void peek_first_request(Department* deps) {
     }
 }
 
-// Вывод состояния структур
+// КРАСИВЫЙ ВЫВОД СОСТОЯНИЯ СТРУКТУР (исправлено по твоим замечаниям)
 void print_structures_state(Department* deps, int dep_count, Stack* s) {
     printf("\n=== ТЕКУЩЕЕ СОСТОЯНИЕ СТРУКТУР ПАМЯТИ ===\n");
     for (int i = 0; i < dep_count; i++) {
@@ -432,7 +432,7 @@ void print_structures_state(Department* deps, int dep_count, Stack* s) {
         }
     }
 
-    printf("\nСтек отменённых заявок:\n");
+    printf("\nСтек отменённых заявок (LIFO — последняя отменённая сверху):\n");
     Node* st = s->top;
     if (!st) {
         printf("  Стек пуст.\n");
@@ -518,7 +518,6 @@ void save_to_file(const char* filename, Department* deps, int dep_count, Stack* 
     FILE* file = fopen(filename, "w");
     if (!file) return;
 
-    // Очереди
     for (int i = 0; i < dep_count; i++) {
         for (int j = 0; j < deps[i].queue_count; j++) {
             Node* curr = deps[i].sub_queues[j]->head;
@@ -622,7 +621,6 @@ void load_from_file(const char* filename, Department* deps, int* max_id, Stack* 
         else {
             free(r);
         }
-        else free(r);
         if (id >= *max_id) *max_id = id + 1;
     }
 
@@ -695,7 +693,6 @@ int main(void) {
             while (getchar() != '\n');
             continue;
         }
-
         if (choice == 0) break;
 
         switch (choice) {
@@ -812,6 +809,7 @@ int main(void) {
         case 5: {
             Request* restored = pop_from_stack(&canceled_stack);
             if (restored) {
+                // Восстанавливаем в отдел 1 (как было в оригинальном коде и как указано в ТЗ — отдел не указан)
                 Queue* tq = select_target_queue(&departments[0]);
                 if (tq) {
                     enqueue_smart(tq, restored);
