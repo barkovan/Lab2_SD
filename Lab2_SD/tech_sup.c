@@ -58,7 +58,7 @@ Node* create_node(Request* r) {
     return new_node;
 }
 
-// Умная вставка с учётом приоритета (чем выше число — тем выше приоритет)
+// Вставка с учётом приоритета (чем выше число — тем выше приоритет)
 void enqueue_smart(Queue* q, Request* r) {
     Node* new_node = create_node(r);
     if (!new_node) return;
@@ -298,7 +298,7 @@ void remove_node(Queue* q, Node* prev, Node* target) {
     free(target);
 }
 
-// ОБРАБОТКА — ИСПРАВЛЕНО: теперь выбирается САМАЯ ПРИОРИТЕТНАЯ готовая заявка из ВСЕХ подочередей отдела
+// Обработка
 void process_next_in_department(Department* dev, int dep_id, Department* all_deps, int dep_count, Stack* s, int id_counter) {
     Queue* best_q = NULL;
     Node* best_prev = NULL;
@@ -411,7 +411,7 @@ void peek_first_request(Department* deps) {
     }
 }
 
-// КРАСИВЫЙ ВЫВОД СОСТОЯНИЯ СТРУКТУР (исправлено по твоим замечаниям)
+// Вывод состояния структур
 void print_structures_state(Department* deps, int dep_count, Stack* s) {
     printf("\n=== ТЕКУЩЕЕ СОСТОЯНИЕ СТРУКТУР ПАМЯТИ ===\n");
     for (int i = 0; i < dep_count; i++) {
@@ -432,7 +432,7 @@ void print_structures_state(Department* deps, int dep_count, Stack* s) {
         }
     }
 
-    printf("\nСтек отменённых заявок (LIFO — последняя отменённая сверху):\n");
+    printf("\nСтек отменённых заявок:\n");
     Node* st = s->top;
     if (!st) {
         printf("  Стек пуст.\n");
